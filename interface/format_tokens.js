@@ -21,7 +21,14 @@ module.exports = ({none, tokens}) => {
 
   // Exit early for tokens environment displays the value with no leading zero
   if (process.env.PREFERRED_TOKENS_TYPE === fullTokensType) {
-    return {display: tokens.toLocaleString()};
+    let postfix = '';
+    if(tokens > 10_000) {
+      postfix = 'k';
+      tokens = Math.floor(tokens / 100) / 10;
+      if(tokens % 1 == 0) postfix = '.0k';
+    }
+
+    return {display: `${tokens.toLocaleString()}${postfix}`};
   }
 
   return {display: tokensAsBigUnit(tokens)};
